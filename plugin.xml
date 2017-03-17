@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-xfyun" version="1.0.0">
+	<name>Xfyun</name>
+	<js-module name="Xfyun" src="www/Xfyun.js">
+		<clobbers target="Xfyun"/>
+	</js-module>
+
+    <preference name="NSMicrophoneUsageDescription" default="请点击'好'以允许访问。"/>
+    <!--<preference name="NSLocationUsageDescription" default="请点击'好'以允许访问。"/>-->
+    <!--<preference name="NSLocationAlwaysUsageDescription" default="请点击'好'以允许访问。"/>-->
+    <!--<preference name="NSContactsUsageDescription" default="请点击'好'以允许访问。"/>-->
+
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="Xfyun">
+				<param name="android-package" value="org.cordova.plugin.xfyun.Xfyun"/>
+			</feature>
+		</config-file>
+
+		<config-file parent="/*" target="AndroidManifest.xml"/>
+
+		<!--权限声明-->
+		<config-file parent="/manifest" target="AndroidManifest.xml">
+			<uses-permission android:name="android.permission.INTERNET"/>
+			<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+			<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+			<uses-permission android:name="android.permission.READ_CONTACTS"/>
+			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+			<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+			<uses-permission android:name="android.permission.WRITE_SETTINGS"/> 
+			<!--定位信息是敏感信息，可通过Setting.setLocationEnable(false)关闭定位请求--> 
+			<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+			<!--摄相头权限，拍照需要用到-->
+			<uses-permission android:name="android.permission.CAMERA"/>
+		</config-file>
+
+		<!--库文件-->
+		<source-file src="src/android/libs/Msc.jar" target-dir="libs"/>
+		<source-file src="src/android/libs/Sunflower.jar" target-dir="libs"/>
+		<source-file src="src/android/libs/arm64-v8a/libmsc.so" target-dir="libs/arm64-v8a"/>
+		<source-file src="src/android/libs/armeabi/libmsc.so" target-dir="libs/armeabi"/>
+		<source-file src="src/android/libs/armeabi-v7a/libmsc.so" target-dir="libs/armeabi-v7a"/>
+		<source-file src="src/android/libs/mips/libmsc.so" target-dir="libs/mips"/>
+		<source-file src="src/android/libs/mips64/libmsc.so" target-dir="libs/mips64"/>
+		<source-file src="src/android/libs/x86/libmsc.so" target-dir="libs/x86"/>
+		<source-file src="src/android/libs/x86_64/libmsc.so" target-dir="libs/x86_64"/>
+
+		<!--源码-->
+		<source-file src="src/android/Xfyun.java" target-dir="src/org/cordova/plugin/xfyun"/>
+	</platform>
+	
+	<platform name="ios">
+		<config-file parent="/*" target="config.xml">
+			<feature name="Xfyun">
+				<param name="ios-package" value="Xfyun"/>
+			</feature>
+		</config-file>
+
+        <!--为了能够在iOS9中正常使用非HTTPS协议-->
+        <!--据说科大讯飞已支持https，如据说是假的，那么把这个注释打开即可-->
+		<!--<config-file parent="NSAppTransportSecurity" target="*-Info.plist">
+			<dict>
+				<key>NSAllowsArbitraryLoads</key>
+				<true/>
+			</dict>
+		</config-file>-->
+
+        <!--权限声明-->
+        <config-file parent="NSMicrophoneUsageDescription" target="*-Info.plist">
+			<string>$NSMicrophoneUsageDescription</string>
+		</config-file>
+
+        <!--库文件-->
+        <framework src="src/ios/libs/iflyMSC.framework" custom="true"/>
+
+        <framework src="libz.tbd"/>
+        <framework src="AVFoundation.framework"/>
+        <framework src="SystemConfiguration.framework"/>
+        <framework src="Foundation.framework"/>
+        <framework src="CoreTelephony.framework"/>
+        <framework src="AudioToolbox.framework"/>
+        <framework src="UIKit.framework"/>
+        <framework src="CoreLocation.framework"/>
+        <framework src="Contacts.framework"/>
+        <framework src="AddressBook.framework"/>
+        <framework src="QuartzCore.framework"/>
+        <framework src="CoreGraphics.framework"/>
+        <framework src="libc++.tbd"/>
+
+        <!--源码-->
+		<source-file src="src/ios/Xfyun.m"/>
+	</platform>
+</plugin>
